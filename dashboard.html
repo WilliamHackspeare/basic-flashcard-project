@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<title>Dashboard</title>
+</head>
+<body>
+	<h1 class="container-fluid">
+		Dashboard
+	</h1>
+	<div class="container-fluid">
+		Welcome, {{ session['name'] }}!
+	</div>
+  <div class="container-fluid">
+    Your Decks:<br>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Last Reviewed</th>
+          <th>Last Score</th>
+          <th>Average Score</th>
+          <th>Cards</th>
+        </tr>
+      </thead>
+
+      <tbody>
+      {% for deck in decks %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td><a href="{{ url_for('deck_view',username=session['username'],deckname=deck.deck_name) }}">{{ deck.deck_name }}</a></td>
+          {% if deck.last_date %}
+          <td>{{ deck.last_date.strftime('%Y-%m-%d') }}</td>
+          <td>{{ deck.last_score }}</td>
+          <td>{{ deck.average_score }}</td>
+          {% else %}
+          <td colspan="3">Not Reviewed</td>
+          {% endif %}
+          <td>{{ deck.num_of_cards }}</td>
+          <td><a class="btn btn-default" href="{{ url_for('del_deck',username=session['username'],deckname=deck.deck_name) }}">Delete</a></td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="container-fluid">
+    <form action="{{ url_for('new_deck') }}" method="POST">
+      <input type="text" name="DeckName" required>
+      <input class="btn" type="submit" value="Add Deck"><br>
+    </form>
+  </div>
+  <div class="container-fluid">
+    {{ session["warning"] }}<br>
+  </div>
+	<div class="container-fluid">
+		<a class="btn btn-default" href="{{ url_for('log_out') }}">Log Out</a>
+	</div>
+</body>
+</html>

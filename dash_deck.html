@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<title>Dashboard</title>
+</head>
+<body>
+	<h1 class="container-fluid">
+		Dashboard
+	</h1>
+	<div class="container-fluid">
+		Welcome, {{ session['name'] }}!
+	</div>
+  <div class="container-fluid">
+    Cards in Deck {{ deckname }}:<br>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Front</th>
+          <th>Back</th>
+          <th>Rating</th>
+        </tr>
+      </thead>
+
+      <tbody>
+      {% for card in cards %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>{{ card.front }}</td>
+          <td>{{ card.back }}</td>
+          <td><a class="btn btn-default" href="{{ url_for('del_card',username=session['username'],deckname=deckname,crd=card.card_id) }}">Delete</a></td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="container-fluid">
+    <form action="{{ url_for('new_card',username = session['username'],deckname=deckname) }}" method="POST">
+      <input type="text" name="Front" required>
+      <input type="text" name="Back" required>
+      <input class="btn btn-default" type="submit" value="Add Card"><br>
+    </form>
+  </div>
+  <div class="container-fluid">
+    {{ session["warning"] }}<br>
+  </div>
+	<div class="container-fluid">
+    <a class="btn btn-default" href="{{ url_for('review',username=session['username'],deckname=deckname) }}">Review</a>
+		<a class="btn btn-default" href="{{ url_for('dashboard',username=session['username']) }}">Go Back</a>
+	</div>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<title>Login</title>
+</head>
+<body>
+	<h1 class="container-fluid">
+		Login
+	</h1>
+	<div class="container-fluid">
+    <div class="form-group">
+		<form class="form-horizontal" action="{{ url_for('user') }}" method="POST">
+			<label for="ID" class="control-label">UserID:</label> <input type="text" name="ID" class="form-control" required><br>
+			<label for="Password" class="control-label">Password:</label> <input type="password" name="Password" class="form-control" required><br>
+			<input type="submit" value="Submit" class="btn btn-default"> <a class="btn btn-default" href="{{ url_for('new_user') }}">New User</a><br>
+      </div>
+      <b>{{ trig }}</b><br>
+    </form>
+</body>
+</html>

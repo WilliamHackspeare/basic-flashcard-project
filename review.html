@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<title>Form</title>
+  <script>
+    var i = 0;
+    var score = 0;
+    const fronts = {{fronts | tojson}};
+    const backs = {{backs | tojson}};
+    const n = fronts.length;
+    function showQues() {
+      var ques = document.getElementById("q");
+      var ans = document.getElementById("a");
+      ques.getElementsByClassName("name")[0].innerHTML = fronts[i]
+      ans.getElementsByClassName("name")[0].innerHTML = backs[i]
+      ques.style.display = 'block';
+      ans.style.display = 'none';
+    }
+    function showAns() {
+      var ques = document.getElementById("q");
+      var ans = document.getElementById("a");
+      ques.style.display = 'none';
+      ans.style.display = 'block';
+    }
+    function res_sub() {
+      var cor = document.forms["frm"]["check"].value;
+      var diff = document.forms["frm"]["Difficulty"].value;
+      score += cor*diff;
+      i+=1;
+      if (i<n) {
+        showQues();
+      } else {
+        finform = document.getElementById("fin");
+        finform.elements[0].value=score;
+        finform.submit();
+      }
+    }
+  </script>
+</head>
+<body onload="showQues()" >
+  <h1 class="container-fluid">
+		Review
+	</h1>
+  <div id="q" class="container-fluid">
+    <h2 class="name"></h2>
+    <input type="button" onclick="showAns()" value="Show Answer!">
+  </div>
+  <div id="a" class="container-fluid">
+    <h2 class="name"></h2><br>
+    <form class="form-inline" name="frm" action="javascript:void(0)" onsubmit="res_sub()">
+    <div class="form-group">
+    <input type="radio" id="correct" name="check" value=1>
+    <label for="correct">Correct</label>
+    <input type="radio" id="incorrect" name="check" value=0 required>
+    <label for="incorrect">Incorrect</label><br>
+    Difficulty:
+    <input type="radio" id="easy" name="Difficulty" value=1 required>
+    <label for="easy">Easy</label>
+    <input type="radio" id="medium" name="Difficulty" value=2>
+    <label for="medium">Medium</label>
+    <input type="radio" id="hard" name="Difficulty" value=3>
+    <label for="hard">Hard</label></br>
+    <input class="btn btn-default" type="submit" name="Submit">
+    </div>
+    </form>
+  </div>
+  <div style="display:none">
+    <form id="fin" action="{{url_for('processing',username = session['username'],deckname=deckname)}}" method="POST">
+      <input type="hidden" name="finscore" value=0>
+      <input type="submit" name="Submit">
+    </form>
+  </div>
+</body>
+</html>
